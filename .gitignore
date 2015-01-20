@@ -1,5 +1,8 @@
 node_modules/
+public/
+.sass-cache/
 .monitor
 config/env/env.json
+app/components/component-map.js
 Makefile
 .DS_Store
