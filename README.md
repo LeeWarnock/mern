@@ -7,13 +7,15 @@ React is a clientside view framework that can render its components on both the 
 
 The following will render the nav component in `/app/components/shared/`.
 
-  res.render('shared/nav', {
-    title: 'Page title',
-    props: {
-      items: [],
-      color: "#3E3E3E"
-    }
-  });
+```
+res.render('shared/nav', {
+  title: 'Page title',
+  props: {
+    items: [],
+    color: "#3E3E3E"
+  }
+});
+```
 
 The props object is passed to the component at render time and is serialized to a data attribute in the HTML to sent to the client. When the client picks up the javascript, it will re-render the component using the props available on the page. Voila!
 
