@@ -14,6 +14,10 @@ var methodOverride = require('method-override');
 var csrf = require('csurf');
 var multer = require('multer');
 var swig = require('swig');
+var path = require('path');
+var fs = require('fs');
+var jade = require('jade');
+var reactViewEngine = require('../lib/react-view-engine.js');
 
 var mongoStore = require('connect-mongo')(session);
 var flash = require('connect-flash');
@@ -64,9 +68,15 @@ module.exports = function (app, passport) {
   }
 
   // set views path, template engine and default layout
-  app.engine('html', swig.renderFile);
-  app.set('views', config.root + '/app/views');
-  app.set('view engine', 'html');
+
+  app.set('views', path.join(__dirname, '../app/components'));
+  app.set('view engine', 'js');
+  var layoutPath = path.join(__dirname, '../app/views/layout.jade');
+  var layout = fs.readFileSync(layoutPath, 'utf8');
+  var layoutFn = jade.compile(layout, {
+    filename: layoutPath
+  });
+  app.engine('js', reactViewEngine(layoutFn));
 
   // expose package.json to views
   app.use(function (req, res, next) {
@@ -117,7 +127,7 @@ module.exports = function (app, passport) {
 
     // This could be moved to view-helpers :-)
     app.use(function (req, res, next) {
-      res.locals.csrf_token = req.csrfToken();
+      res.locals.csrfToken = req.csrfToken();
       next();
     });
   }

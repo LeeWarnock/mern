@@ -32,6 +32,7 @@ exports.create = function (req, res) {
   user.provider = 'local';
   user.save(function (err) {
     if (err) {
+      console.log(err);
       return res.render('users/signup', {
         error: utils.errors(err.errors),
         user: user,
@@ -72,7 +73,7 @@ exports.authCallback = login;
  */
 
 exports.login = function (req, res) {
-  res.render('users/login', {
+  res.render('auth/login', {
     title: 'Login'
   });
 };

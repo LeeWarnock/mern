@@ -158,7 +158,7 @@ UserSchema.methods = {
    */
 
   skipValidation: function() {
-    return ~oAuthTypes.indexOf(this.provider);
+    return true//~oAuthTypes.indexOf(this.provider);
   }
 };
 

@@ -7,17 +7,11 @@
 // set the NODE_PATH to be ./app/controllers (package.json # scripts # start)
 
 var users = require('users');
-var articles = require('articles');
-var comments = require('comments');
-var tags = require('tags');
-var auth = require('./middlewares/authorization');
 
 /**
  * Route middlewares
  */
 
-var articleAuth = [auth.requiresLogin, auth.article.hasAuthorization];
-var commentAuth = [auth.requiresLogin, auth.comment.hasAuthorization];
 
 /**
  * Expose routes
@@ -87,28 +81,8 @@ module.exports = function (app, passport) {
 
   app.param('userId', users.load);
 
-  // article routes
-  app.param('id', articles.load);
-  app.get('/articles', articles.index);
-  app.get('/articles/new', auth.requiresLogin, articles.new);
-  app.post('/articles', auth.requiresLogin, articles.create);
-  app.get('/articles/:id', articles.show);
-  app.get('/articles/:id/edit', articleAuth, articles.edit);
-  app.put('/articles/:id', articleAuth, articles.update);
-  app.delete('/articles/:id', articleAuth, articles.destroy);
-
   // home route
-  app.get('/', articles.index);
-
-  // comment routes
-  app.param('commentId', comments.load);
-  app.post('/articles/:id/comments', auth.requiresLogin, comments.create);
-  app.get('/articles/:id/comments', auth.requiresLogin, comments.create);
-  app.delete('/articles/:id/comments/:commentId', commentAuth, comments.destroy);
-
-  // tag routes
-  app.get('/tags/:tag', tags.index);
-
+  app.get('/', users.login);
 
   /**
    * Error handling
